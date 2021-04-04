@@ -1,0 +1,154 @@
+# attribute: power, volume, channel, muteValue, tempVolume
+# method: TV.onAndOff(), TV.max(), TV.min(), TV.mute(), TV.channelUp(), TV.channelDown()
+
+#Television class 생성
+class Television:
+    
+    def __init__(self, power, volume, channel, muteValue, tempVolume):
+
+        self.power=power
+        self.volume=volume
+        self.channel=channel
+        self.muteValue=muteValue
+        self.tempVolume=tempVolume
+
+
+    def show(self):
+        print(self.power, self.volume, self.channel, self.muteValue, self.tempVolume)
+
+
+    def onAndOff(self):
+        #TV가 꺼져 있으면 TV 켜고 TV가 켜져 있으면 TV 끄기
+        if self.power==0:
+            self.power=True
+            print("Power on")
+        else:
+            self.power=False
+            print("Power off")
+
+
+    def max(self):
+        
+        #TV 전원이 켜진 상태라면 코드 동작
+        if self.power==1:
+            #Volume이 100보다 작으면 Volume 100까지 올리기
+            if self.volume<100:
+                self.volume=100
+                #볼륨을 한 칸씩 올린다면 >> 나중에 시간될 때 volumeUp 메소드 만들기
+                #while self.volume==100:
+                #    self.volume+=1
+                print("Volume:",self.volume)
+                
+        else:
+            print("The tv is off.")
+
+            
+    def min(self):
+        
+        #TV 전원이 켜진 상태라면 코드 동작
+        if self.power==1:
+            
+            #Volume이 0보다 크면 Volume 0까지 내리기
+            if self.volume>0:
+                self.volume=0
+                #볼륨을 한 칸씩 내린다면 >> 나중에 시간될 때 volumeDown 메소드 만들기
+                #while self.volume==0:
+                #    self.volume-=1
+                print("Volume:",self.volume)
+        else:
+            print("The tv is off.")                
+
+                
+    def mute(self):
+        
+        #TV 전원이 켜진 상태라면 코드 동작
+        if self.power==1:
+            
+            #volume이 0이면 volume을 0으로 만들기
+            #volume이 0이 아니면 원래의 volume값(변수 temp)으로 되돌리기
+
+            #mute가 홀수 번 눌렸을 때 뮤트하기
+            if self.muteValue==0:
+                self.tempVolume=self.volume
+                self.volume=0
+                print("Volume has been muted")
+                self.muteValue=True            
+                            
+            #mute가 짝수 번 눌렸을 때 뮤트 해제    
+            else:
+                self.volume=self.tempVolume
+                print("Volume has been unmuted")            
+                self.muteValue=False
+
+            print("Volume:",self.volume)
+            
+        else:
+            print("The tv is off.")  
+
+
+    def channelUp(self):
+        
+        #TV 전원이 켜진 상태라면 코드 동작
+        if self.power==1:
+            
+            #channel 수를 한 칸 올린다
+            self.channel+=1
+
+            #최대 channel 100, 오버플로우되면 채녈 1로 바꾸기(101이 1과 같아야 함) 
+            if self.channel>100:
+                self.channel=(self.channel%101)+1
+            print("Channel:",self.channel)
+            
+        else:
+            print("The tv is off.")  
+
+
+    def channelDown(self):
+        
+        #TV 전원이 켜진 상태라면 코드 동작
+        if self.power==1:
+            
+            #channel 수를 한 칸 내린다
+            self.channel-=1
+
+            #최소 channel 1, 오버플로우되면 채녈 100으로 바꾸기(0이 100과 같아야 함)
+            if self.channel<1:
+                self.channel+=100
+                self.channel%=101
+            print("Channel:",self.channel)
+                
+        else:
+            print("The tv is off.") 
+
+
+#생성자 호출, 객체 생성
+TV = Television(power=False, volume=50, channel=1, muteValue=False, tempVolume=0)
+
+TV.max()
+TV.min()
+TV.mute()
+TV.channelUp()
+TV.channelDown()
+print()
+
+TV.onAndOff()
+TV.onAndOff()
+TV.onAndOff()
+print()
+
+TV.mute()
+TV.mute()
+TV.mute()
+print()
+
+TV.max()
+TV.min()
+print()
+
+#디폴트값 channel=99 설정한 후 테스트
+#for i in range(101):
+#    TV.channelUp()
+
+#디폴트값 channel=1 설정한 후 테스트
+for i in range(101):
+    TV.channelDown()
